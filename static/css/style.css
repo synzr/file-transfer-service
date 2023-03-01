@@ -1,4 +1,21 @@
-body {
+body, main {
     margin: 0;
     padding: 0;
+}
+
+#upload-form {
+    padding: 10px;
+}
+
+#upload-form #drag-and-drop {
+    width: 128px;
+    height: 128px;
+    display: block;
+    outline-style: dashed;
+    text-align: center;
+    user-select: none;
+}
+
+.invisible {
+    display: none;
 }
