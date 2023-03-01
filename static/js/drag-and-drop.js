@@ -27,6 +27,10 @@ const handleFiles = (files) => {
       .setAttribute('value', event.detail.loaded / event.detail.total * 100)
   )
 
+  htmx.on(
+    '#upload-form', 'htmx:xhr:loadend', () => uploadProgress.classList.add("invisible")
+  )
+
   uploadForm.requestSubmit()
   uploadProgress.classList.remove("invisible")
 }
