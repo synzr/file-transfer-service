@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, abort
 from nanoid import generate as nanoid
+from database import database, migrate
 import mimetypes
 import os
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite3"
 app.secret_key = os.urandom(256)
 
-database = {}
+database.init_app(app)
+migrate.init_app(app)
 
 
 @app.get("/")
