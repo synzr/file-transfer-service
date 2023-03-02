@@ -4,10 +4,12 @@ from database import database, migrate, file_upload
 from os.path import join, dirname, realpath
 from configuration_parser import parse_configuration
 from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
 import random
 import mimetypes
 import os
 import json
+import time
 
 app = Flask(__name__)
 
@@ -21,6 +23,31 @@ migrate.init_app(app)
 file_upload.init_app(app, database)
 
 from models.file import File
+
+
+def clean_files_job():
+    print("Clean files job is started")
+
+    with app.app_context():
+        files = File.query.all()
+
+        for file in files:
+            if datetime.now() > file.expires_in:
+                try:
+                    file = file_upload.delete_files(file, parent=True, files=["file"])
+
+                    database.session.delete(file)
+                    database.session.commit()
+
+                    print(f"Deleted file {file.id}")
+                except:
+                    pass
+
+
+scheduler = BackgroundScheduler()
+
+scheduler.add_job(func=clean_files_job, trigger="interval", seconds=60)
+scheduler.start()
 
 
 @app.get("/")
@@ -92,4 +119,30 @@ def upload_file():
 
 @app.get("/<file_id>")
 def download_page(file_id):
-    return file_id
+    file = File.query.get_or_404(file_id)
+
+    if datetime.now() > file.expires_in:
+        file = file_upload.delete_files(file, parent=True, files=["file"])
+
+        database.session.delete(file)
+        database.session.commit()
+
+        return abort(404)
+
+    file_url = file_upload.get_file_url(file, filename="file")
+    return render_template("download.html", file=file, file_url=file_url)
+
+
+@app.delete("/<file_id>/delete")
+def delete_file(file_id):
+    file = File.query.get_or_404(file_id)
+
+    if file.password != request.form["password"]:
+        return abort(400)
+
+    file = file_upload.delete_files(file, parent=True, files=["file"])
+
+    database.session.delete(file)
+    database.session.commit()
+
+    return "Successful"

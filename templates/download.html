@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="download">
+    <h3>{{ file.filename }}</h3>
+    <h4>{{ file.file_size }}</h4>
+
+    <p>expires in: {{ file.expires_in }}</p>
+
+    <a href="{{ file_url }}" download>
+        <button>Скачать</button>
+    </a>
+    <form hx-delete="/{{ file.id }}/delete">
+        <button>Удалить</button>
+        <input type="text" name="password" id="password" />
+    </form>
+</div>
+{% endblock %}
