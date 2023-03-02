@@ -26,8 +26,6 @@ from models.file import File
 
 
 def clean_files_job():
-    print("Clean files job is started")
-
     with app.app_context():
         files = File.query.all()
 
