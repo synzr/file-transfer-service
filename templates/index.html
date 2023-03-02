@@ -9,12 +9,21 @@
     <input type="file" id="file" name="file" hidden />
     <label id="drag-and-drop" for="file">
         <h4>Выберите или перетащите ваш файл</h4>
+        <progress id='upload-progress' value='0' max='100' class="invisible"></progress>
     </label>
+
+    <select id="upload_duration" name="upload_duration">
+        {% for index, upload_duration in upload_durations %}
+        <option value="{{ index }}">Хранить на {{ upload_duration.duration_in_minutes }} минут</option>
+        {% endfor %}
+    </select>
 </form>
 
-<progress id='upload-progress' value='0' max='100' class="invisible"></progress>
 {% endblock %}
 
 {% block extrajs %}
-<script src="/static/js/drag-and-drop.js"></script>
+<script src="/static/js/upload-page.js"></script>
+<script>
+window.uploadDurations = JSON.parse(`{{ upload_durations_json|safe }}`)
+</script>
 {% endblock %}

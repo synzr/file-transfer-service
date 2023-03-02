@@ -2,18 +2,18 @@ from flask import Flask, render_template, request, abort
 from nanoid import generate as nanoid
 from database import database, migrate, file_upload
 from os.path import join, dirname, realpath
+from configuration_parser import parse_configuration
+from datetime import datetime, timedelta
+import random
 import mimetypes
 import os
+import json
 
 app = Flask(__name__)
 
 app.config["UPLOAD_FOLDER"] = join(dirname(realpath(__file__)), "static/uploads")
 
-app.config["ALLOWED_EXTENSIONS"] = ["jpg", "png", "mov", "mp4", "mpg"]
-app.config["MAX_CONTENT_LENGTH"] = 1000 * 1024 * 1024
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite3"
-
+parse_configuration(app)
 app.secret_key = os.urandom(256)
 
 database.init_app(app)
@@ -24,23 +24,72 @@ from models.file import File
 
 
 @app.get("/")
-def index():
-    return render_template("index.html")
+def upload_page():
+    return render_template("index.html",
+                           upload_durations=enumerate(
+                                app.config["UPLOAD_DURATIONS"]
+                           ),
+                           upload_durations_json=json.dumps(
+                                app.config["UPLOAD_DURATIONS"]
+                           ))
 
 
 @app.put("/files")
 def upload_file():
-    if not request.files or "file" not in request.files:
+    if not request.files or \
+        "file" not in request.files or \
+            "upload_duration" not in request.form:
         return abort(400)
 
     uploaded_file = request.files["file"]
+    upload_duration_index = int(
+        request.form["upload_duration"]
+    )
+
+    if os.path.splitext(uploaded_file.filename)[-1][1:] \
+        not in app.config["ALLOWED_EXTENSIONS"] or \
+            upload_duration_index > len(app.config["UPLOAD_DURATIONS"]):
+        return abort(400)
+
+    upload_duration = app.config["UPLOAD_DURATIONS"][upload_duration_index]
+
+    file_length = uploaded_file.seek(0, os.SEEK_END)
+    if file_length / 1000000 > \
+        upload_duration["maximum_file_size_in_mb"]:
+        return abort(400)
+    
+    uploaded_file.seek(0, os.SEEK_SET)
 
     db_file = File(id=nanoid())
+
     db_file.content_type = uploaded_file.content_type
+    db_file.expires_in = datetime.now() + timedelta(
+        minutes=upload_duration["duration_in_minutes"]
+    )
+    db_file.password = random.choice(
+        app.config["PASSWORDS"]
+    )
+    db_file.filename = uploaded_file.filename
+
+    db_file.file_size = f"{(file_length / 1048576):.2f} мб"
+
+    if file_length < 1024:
+        db_file.file_size = f"{file_length} байт"
+    elif file_length > 1024 and file_length < 1048576:
+        db_file.file_size = f"{(file_length / 1024):.2f} кб"
 
     file_upload.add_files(db_file, files={"file": uploaded_file})
 
     database.session.add(db_file)
     database.session.commit()
 
-    return f"File was uploaded. {file_upload.get_file_url(db_file, filename='file')}"
+    return render_template("upload-successful.html",
+                           filename=db_file.filename,
+                           file_size=db_file.file_size,
+                           file_id=db_file.id,
+                           password=db_file.password)
+
+
+@app.get("/<file_id>")
+def download_page(file_id):
+    return file_id

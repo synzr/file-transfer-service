@@ -7,7 +7,7 @@ body, main {
     padding: 10px;
 }
 
-#upload-form #drag-and-drop {
+#drag-and-drop {
     width: 128px;
     height: 128px;
     display: block;

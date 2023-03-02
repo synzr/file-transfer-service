@@ -1,0 +1,19 @@
+{
+    "database_url": "sqlite:///database.sqlite3",
+    "allowed_extensions": ["jpg", "png", "mov", "mp4", "mpg"],
+    "maximum_content_length": 1048576000,
+    "upload_durations": [{
+        "duration_in_minutes": 15,
+        "maximum_file_size_in_mb": 300
+    }, {
+        "duration_in_minutes": 30,
+        "maximum_file_size_in_mb": 200
+    }, {
+        "duration_in_minutes": 60,
+        "maximum_file_size_in_mb": 100
+    }, {
+        "duration_in_minutes": 120,
+        "maximum_file_size_in_mb": 50
+    }],
+    "passwords": ["повод", "инна", "плод", "пять", "иван", "существо", "многое", "король", "кабинет", "слава", "светлый", "темный", "ежик", "сказка", "тюрьма", "пушкин", "хозяйка", "беларусь", "впоследствии", "инструкция", "замысел", "гараж", "индикатор", "гоголь", "курсант", "костыль", "половинка", "семя", "товарищ"]
+}
