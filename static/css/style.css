@@ -1,20 +1,133 @@
-body, main {
+body{
     margin: 0;
     padding: 0;
+    background-image: url(/static/images/1640655870_1-abrakadabra-fun-p-gori-na-ekran-blokirovki-1.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    
+}
+
+main{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.header_container{
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    backdrop-filter: blur(1px);
+    margin-top: 0px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+}
+
+.font_main h1{
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+    opacity: 1;
+    margin-top: 0px;
+}
+
+
+.font_name h1{
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+    opacity: 1;
+    margin-top: 0px;
+    filter: blur(10px); 
+}
+
+.font_main{
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+}
+
+.main__container{
+    height: 100%;
+    width: 750px;    
+    backdrop-filter: blur(5px);
+}
+
+.main__wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.main_explain{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 12px;
+}
+
+.main_explain p {
+    margin-top: 20px;
 }
 
 #upload-form {
     padding: 10px;
+    margin-top: 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+#drag-and-drop h4{
+    margin-top: 0px;
+}
+
+#drag-and-drop img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90px;
+    height: 100px;
+
+}
+
+.drag-and-drop_form{
 }
 
 #drag-and-drop {
-    width: 128px;
-    height: 128px;
+    width: 300px;
+    height: 300px;
     display: block;
-    outline-style: dashed;
+    outline-style:solid;
     text-align: center;
     user-select: none;
+    border-radius: 5px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 23px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
 }
+
+#upload_duration { 
+    border-radius: 5px;
+    border-color: black;
+    width: 300px;
+    height: 60px;
+    outline-style: solid;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 23px; 
+}
+
 
 .invisible {
     display: none;

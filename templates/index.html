@@ -8,7 +8,10 @@
 >
     <input type="file" id="file" name="file" hidden />
     <label id="drag-and-drop" for="file">
+    <div class="drag-and-drop_form">
+        <img src="/static/images/upload-file-svgrepo-com.svg" alt="">
         <h4>Выберите или перетащите ваш файл</h4>
+    </div>
         <progress id='upload-progress' value='0' max='100' class="invisible"></progress>
     </label>
 
@@ -17,8 +20,14 @@
         <option value="{{ index }}">Хранить на {{ upload_duration.duration_in_minutes }} минут</option>
         {% endfor %}
     </select>
+    <div class="main_explain">
+        <p style="    margin-bottom: 0px;">
+            Разрешенные форматы файлов: .png, .jpg, .zip, .rar, .mp4<br />
+            Максимальное разрашенное размер файла: 300 мб
+        </p>
+        </div>
 </form>
-{% endblock %}
+{% endblock %}  
 
 {% block extrajs %}
 <script src="/static/js/upload-page.js"></script>
