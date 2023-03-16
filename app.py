@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, Response
+from flask import Flask, render_template, request, abort, Response, redirect
 from nanoid import generate as nanoid
 from database import database, migrate, file_upload
 from os.path import join, dirname, realpath
@@ -48,7 +48,7 @@ scheduler.start()
 
 @app.errorhandler(404)
 def status_404_page(exception):
-    return render_template("error.html")
+    return redirect("/")
 
 
 @app.get("/")
