@@ -1,10 +1,20 @@
 <!-- Upload Successful fragment / Фрагмент успешной выгрузки страницы -->
-<div id="drag-and-drop">
-    <h5>{{ filename }}</h5>
-    <p>{{ file_size }}</p>
+<div class="width-thing">
+    <div class="dnd-wrapper">
+        <div class="dnd">
+            <div class="drag-and-drop_form">
+                <h3>{{ filename }}</h3>
+                <h4>{{ file_size }}</h4>
 
-    <a href="/{{ file_id }}">Ссылка на файл</a>
-    <span>
-        Пароль: <b>{{ password }}</b>
-    </span>
+                <a href="/{{ file_id }}">Ссылка на файл</a>
+                <br />
+
+                Пароль: <b>{{ password }}</b>
+            </div>
+        </div>
+    </div>
+
+    <button id="go_to_back" onclick="document.location.reload()">
+        Вернуться назад
+    </button>
 </div>

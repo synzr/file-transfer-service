@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, Response
 from nanoid import generate as nanoid
 from database import database, migrate, file_upload
 from os.path import join, dirname, realpath
@@ -6,10 +6,8 @@ from configuration_parser import parse_configuration
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 import random
-import mimetypes
 import os
 import json
-import time
 
 app = Flask(__name__)
 
@@ -48,9 +46,15 @@ scheduler.add_job(func=clean_files_job, trigger="interval", seconds=60)
 scheduler.start()
 
 
+@app.errorhandler(404)
+def status_404_page(exception):
+    return render_template("error.html")
+
+
 @app.get("/")
 def upload_page():
     return render_template("index.html",
+                           extensions=app.config["ALLOWED_EXTENSIONS"],
                            upload_durations=enumerate(
                                 app.config["UPLOAD_DURATIONS"]
                            ),
@@ -128,7 +132,13 @@ def download_page(file_id):
         return abort(404)
 
     file_url = file_upload.get_file_url(file, filename="file")
-    return render_template("download.html", file=file, file_url=file_url)
+
+    td = file.expires_in - datetime.now()
+    days, hours, minutes = td.days, td.seconds // 3600, td.seconds % 3600 / 60.0
+
+    expires_in = f"{int(minutes + (hours * 60) + (days * 60 * 24))} минут"
+
+    return render_template("download.html", file=file, file_url=file_url, expires_in=expires_in)
 
 
 @app.delete("/<file_id>/delete")
@@ -143,4 +153,4 @@ def delete_file(file_id):
     database.session.delete(file)
     database.session.commit()
 
-    return "Successful"
+    return Response(status=201, headers={"HX-Redirect": "/"})

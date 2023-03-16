@@ -1,7 +1,7 @@
-body{
+body {
     margin: 0;
     padding: 0;
-    background-image: url(/static/images/1640655870_1-abrakadabra-fun-p-gori-na-ekran-blokirovki-1.jpg);
+    background-image: url(/static/images/background.jpg);
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
@@ -10,10 +10,13 @@ body{
     -o-background-size: cover;
     background-size: cover;
     height: 100vh;
-    
 }
 
-main{
+* {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+main {
     margin: 0;
     position: absolute;
     top: 50%;
@@ -22,43 +25,48 @@ main{
     transform: translate(-50%, -50%);
 }
 
-.header_container{
+.header_container {
     width: 100%;
     height: 50px;
-    background-color: white;
-    backdrop-filter: blur(1px);
-    margin-top: 0px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
-}
 
-.font_main h1{
-    font-family: 'Noto Sans', sans-serif;
-    margin-left: 10px;
-    opacity: 1;
-    margin-top: 0px;
-}
-
-
-.font_name h1{
-    font-family: 'Noto Sans', sans-serif;
-    margin-left: 10px;
-    opacity: 1;
-    margin-top: 0px;
-    filter: blur(10px); 
-}
-
-.font_main{
-    font-family: 'Noto Sans', sans-serif;
-    margin-left: 10px;
-}
-
-.main__container{
-    height: 100%;
-    width: 750px;    
     backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.5);
+    
+    display: flex;
+    align-items: center;
+
+    /* Параметры тени */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.main__wrapper{
+.font_main {
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+    opacity: 1;
+    margin-top: 0px;
+    user-select: none;
+    font-size: 18px;
+}
+
+.font_name h1 {
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+    opacity: 1;
+    margin-top: 0px;
+    filter: blur(10px);
+}
+
+.font_main {
+    font-family: 'Noto Sans', sans-serif;
+    margin-left: 10px;
+}
+
+.main__container {
+    height: 100%;
+    width: 750px;
+}
+
+.main__wrapper {
     width: 100%;
     height: 100%;
     display: flex;
@@ -66,69 +74,112 @@ main{
     justify-content: center;
     vertical-align: middle;
     text-align: center;
-    background-color: white;
     border-radius: 10px;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.main_explain{
+.main_explain {
     font-family: 'Noto Sans', sans-serif;
-    font-size: 12px;
+    font-size: 10px;
+    user-select: none;
 }
 
-.main_explain p {
-    margin-top: 20px;
-}
-
-#upload-form {
+.upload-form {
     padding: 10px;
     margin-top: 0px;
     justify-content: center;
     align-items: center;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-#drag-and-drop h4{
-    margin-top: 0px;
-}
-
-#drag-and-drop img{
+.dnd img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 90px;
-    height: 100px;
-
+    width: 75px;
 }
 
-.drag-and-drop_form{
+.dnd p {
+    margin: 0;
+    font-size: 18px;
 }
 
-#drag-and-drop {
-    width: 300px;
-    height: 300px;
-    display: block;
-    outline-style:solid;
+.width-thing {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.dnd-wrapper {
+    width: 100%;
+    height: 250px;
+    outline: solid #000 3px;
     text-align: center;
     user-select: none;
     border-radius: 5px;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 23px; 
+    font-size: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    background-color: white;
 }
 
-#upload_duration { 
+.dnd {
+    width: 90%;
+    height: fit-content;
+}
+
+#upload_duration {
     border-radius: 5px;
-    border-color: black;
-    width: 300px;
-    height: 60px;
-    outline-style: solid;
+    width: 100%;
+    outline: solid #000 3px;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 23px; 
+    font-size: 16px;
+    padding: 12px;
+    background: #fff;
 }
-
 
 .invisible {
-    display: none;
+    display: none
+}
+
+button {
+    border-radius: 5px;
+    width: 100%;
+    outline: solid #000 3px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+}
+
+input[type="text"] {
+    margin: 0;
+    border-radius: 5px;
+    outline: solid #000 3px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.delete_form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.error-page {
+    padding: 20px;
+}
+
+.error-page p {
+    margin: 0;
 }

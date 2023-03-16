@@ -2,6 +2,8 @@ const uploadForm = document.getElementById("upload-form")
 const dragAndDropInput = document.getElementById("file")
 const dragAndDropElement = document.getElementById("drag-and-drop")
 const uploadProgress = document.getElementById("upload-progress")
+const uploadDuration = document.getElementById("upload_duration")
+const maximumAllowedSize = document.getElementById("maximum_allowed_size")
 
 const preventDefaults = (element) => {
   element.preventDefault()
@@ -35,8 +37,28 @@ const handleFiles = (files) => {
   uploadProgress.classList.remove("invisible")
 }
 
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(
+const handleUploadDurationChange = () => {
+  const uploadDurationIndex = parseInt(
+    uploadDuration.value, 10
+  )
+  const {
+    maximum_file_size_in_mb: maximumAllowedSizeValue
+  } = window.uploadDurations[uploadDurationIndex]
+
+  maximumAllowedSize.innerHTML = maximumAllowedSizeValue.toString()
+}
+
+['dragenter', 'dragover', 'dragleave', 'drop', 'click'].forEach(
   (event) => dragAndDropElement.addEventListener(event, preventDefaults, false)
 )
 
 dragAndDropElement.addEventListener('drop', handleDrop, false)
+
+uploadDuration.addEventListener("change", handleUploadDurationChange)
+const loadInterval = setInterval(() => {
+  if (window.uploadDurations) {
+    handleUploadDurationChange()
+    clearInterval(loadInterval)
+  }
+}, 100)
+

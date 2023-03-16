@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 <!-- Main Page / Основная страница -->
 {% block content %}
-<form
-    id="upload-form"
-    hx-put="/files"
-    hx-encoding="multipart/form-data"
->
-    <input type="file" id="file" name="file" hidden />
-    <label id="drag-and-drop" for="file">
-    <div class="drag-and-drop_form">
-        <img src="/static/images/upload-file-svgrepo-com.svg" alt="">
-        <h4>Выберите или перетащите ваш файл</h4>
-    </div>
-        <progress id='upload-progress' value='0' max='100' class="invisible"></progress>
-    </label>
+<form id="upload-form" class="upload-form" hx-put="/files" hx-encoding="multipart/form-data">
+    <input type="file" id="file" name="file" hidden onchange="handleFiles()" />
 
-    <select id="upload_duration" name="upload_duration">
-        {% for index, upload_duration in upload_durations %}
-        <option value="{{ index }}">Хранить на {{ upload_duration.duration_in_minutes }} минут</option>
-        {% endfor %}
-    </select>
+    <div class="width-thing">
+        <label id="drag-and-drop" class="dnd-wrapper" for="file">
+            <div class="dnd">
+                <div class="drag-and-drop_form">
+                    <img src="/static/images/upload-icon.svg" alt="">
+                    <p>Перетащите ваш файл</p>
+                </div>
+                <progress id='upload-progress' value='0' max='100' class="invisible"></progress>
+            </div>
+        </label>
+
+        <select id="upload_duration" name="upload_duration">
+            {% for index, upload_duration in upload_durations %}
+            <option value="{{ index }}">Хранить на {{ upload_duration.duration_in_minutes }} минут</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <div class="main_explain">
-        <p style="    margin-bottom: 0px;">
-            Разрешенные форматы файлов: .png, .jpg, .zip, .rar, .mp4<br />
-            Максимальное разрашенное размер файла: 300 мб
+        <p style="margin-bottom: 0px;">
+            Разрешенные форматы файлов: {% for extension in extensions %}.{{ extension + ", " if extensions[-1] != extension else extension }}{% endfor %}<br />
+            Максимальное разрашенное размер файла: <span id="maximum_allowed_size">?</span> мб
         </p>
-        </div>
+    </div>
 </form>
-{% endblock %}  
+{% endblock %}
 
 {% block extrajs %}
 <script src="/static/js/upload-page.js"></script>
 <script>
-window.uploadDurations = JSON.parse(`{{ upload_durations_json|safe }}`)
+    window.uploadDurations = JSON.parse(`{{ upload_durations_json|safe }}`)
 </script>
 {% endblock %}

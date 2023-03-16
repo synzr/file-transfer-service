@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 <!-- Download Page / Страница Загрузки -->
 {% block content %}
-<div class="download">
-    <h3>{{ file.filename }}</h3>
-    <h4>{{ file.file_size }}</h4>
+<div class="width-thing">
+    <div class="dnd-wrapper">
+        <div class="dnd">
+            <div class="drag-and-drop_form">
+                <h3>{{ file.filename }}</h3>
+                <h4>{{ file.file_size }}</h4>
+            </div>
+        </div>
+    </div>
 
-    <p>expires in: {{ file.expires_in }}</p>
+    <div>Истекает через {{ expires_in }}</div>
 
     <a href="{{ file_url }}" download>
         <button>Скачать</button>
     </a>
-    <form hx-delete="/{{ file.id }}/delete">
+
+    <form class="delete_form" hx-delete="/{{ file.id }}/delete">
         <button>Удалить</button>
-        <input type="text" name="password" id="password" />
+        <input type="text" name="password" id="password" placeholder="Пароль" />
     </form>
 </div>
 {% endblock %}
