@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, Response, redirect
+from flask import Flask, render_template, request, abort, Response, redirect, send_file
 from nanoid import generate as nanoid
 from database import database, migrate, file_upload
 from os.path import join, dirname, realpath
@@ -161,6 +161,14 @@ def delete_file(file_id):
     database.session.commit()
 
     return Response(status=201, headers={"HX-Redirect": "/"})
+
+
+@app.get("/<file_id>/download")
+def download_file(file_id):
+    file = File.query.get_or_404(file_id)
+    file_url = file_upload.get_file_url(file, filename="file")
+
+    return send_file("./static/" + file_url.split("/static/")[-1], as_attachment=True, download_name=file.filename)
 
 
 if __name__ == "__main__":
