@@ -2,7 +2,7 @@
 
 FROM python:3.10.10-bullseye
 
-WORKDIR /var/app
+WORKDIR /usr/
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY . /var/app
 
 CMD [ "python3" "-m", "flask", "db", "upgrade" ]
-CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0" ]
+CMD [ "python3", "app.py" ]
