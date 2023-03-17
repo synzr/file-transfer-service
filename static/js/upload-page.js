@@ -4,6 +4,7 @@ const dragAndDropElement = document.getElementById("drag-and-drop")
 const uploadProgress = document.getElementById("upload-progress")
 const uploadDuration = document.getElementById("upload_duration")
 const maximumAllowedSize = document.getElementById("maximum_allowed_size")
+const errorPlacement = document.getElementById("error-placement")
 
 const preventDefaults = (element) => {
   element.preventDefault()

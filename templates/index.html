@@ -25,7 +25,8 @@
     <div class="main_explain">
         <p style="margin-bottom: 0px;">
             Разрешенные форматы файлов: {% for extension in extensions %}.{{ extension + ", " if extensions[-1] != extension else extension }}{% endfor %}<br />
-            Максимальное разрашенное размер файла: <span id="maximum_allowed_size">?</span> мб
+            Максимальное разрашенное размер файла: <span id="maximum_allowed_size">?</span> мб<br />
+            <span id="error-placement"></span>
         </p>
     </div>
 </form>

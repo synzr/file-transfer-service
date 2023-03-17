@@ -5,11 +5,13 @@ from os.path import join, dirname, realpath
 from configuration_parser import parse_configuration
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
+from flask_minify import Minify
 import random
 import os
 import json
 
 app = Flask(__name__)
+Minify(app=app, html=True, js=True, cssless=True)
 
 app.config["UPLOAD_FOLDER"] = join(dirname(realpath(__file__)), "static/uploads")
 
@@ -78,14 +80,16 @@ def upload_file():
     if os.path.splitext(uploaded_file.filename)[-1][1:] \
         not in app.config["ALLOWED_EXTENSIONS"] or \
             upload_duration_index > len(app.config["UPLOAD_DURATIONS"]):
-        return abort(400)
+        content = render_template("error-upload.html", error="Данный формат не разрешены для загрузки.")
+        return Response(content, headers={"HX-Retarget": "#error-placement", "HX-Reswap": "outerHTML"})
 
     upload_duration = app.config["UPLOAD_DURATIONS"][upload_duration_index]
 
     file_length = uploaded_file.seek(0, os.SEEK_END)
     if file_length / 1000000 > \
         upload_duration["maximum_file_size_in_mb"]:
-        return abort(400)
+        content = render_template("error-upload.html", error=f"Слишком большой размер файла. Нужно не больше чем {upload_duration['maximum_file_size_in_mb']} мб.")
+        return Response(content, headers={"HX-Retarget": "#error-placement", "HX-Reswap": "outerHTML"})
     
     uploaded_file.seek(0, os.SEEK_SET)
 
@@ -121,7 +125,10 @@ def upload_file():
 
 @app.get("/<file_id>")
 def download_page(file_id):
-    file = File.query.get_or_404(file_id)
+    file = File.query.get(file_id)
+
+    if not file:
+        return render_template("error-file.html")
 
     if datetime.now() > file.expires_in:
         file = file_upload.delete_files(file, parent=True, files=["file"])
