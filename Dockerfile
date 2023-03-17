@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . /usr/src/app/
 
-CMD [ "python3", "-m", "flask", "db", "upgrade", "&&", "python3", "app.py" ]
+CMD [ "sh", "./scripts/run-app.sh" ]
